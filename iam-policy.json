@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ZombieSweepReadOnly",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "ec2:DescribeInstances",
+        "ec2:DescribeVolumes",
+        "ec2:DescribeSnapshots",
+        "ec2:DescribeAddresses",
+        "ec2:DescribeNatGateways",
+        "elasticloadbalancing:DescribeLoadBalancers",
+        "rds:DescribeDBInstances",
+        "elasticache:DescribeCacheClusters",
+        "eks:ListClusters",
+        "eks:DescribeCluster",
+        "ecs:ListClusters",
+        "ecs:DescribeClusters",
+        "s3:ListAllMyBuckets",
+        "s3:GetBucketLocation",
+        "logs:DescribeLogGroups",
+        "cloudwatch:GetMetricStatistics",
+        "sts:GetCallerIdentity",
+        "ce:GetCostAndUsageWithResources"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ZombieSweepLogRetention",
+      "Effect": "Allow",
+      "Action": [
+        "logs:PutRetentionPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ZombieSweepDestroy",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:TerminateInstances",
+        "ec2:DeleteVolume",
+        "ec2:DeleteSnapshot",
+        "ec2:ReleaseAddress",
+        "ec2:DeleteNatGateway",
+        "elasticloadbalancing:DeleteLoadBalancer",
+        "rds:DeleteDBInstance",
+        "elasticache:DeleteCacheCluster",
+        "eks:DeleteCluster",
+        "ecs:DeleteCluster"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "aws:RequestedRegion": "*"
+        }
+      }
+    }
+  ]
+}
