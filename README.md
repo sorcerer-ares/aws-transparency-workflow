@@ -103,20 +103,25 @@ zombie-sweeper set-log-retention --all-regions --days 7
 
 ---
 
-## 🤖 Switch AI Integration (`room.yaml`)
+## 🤖 Switch AI Integration
 
-Mount `room.yaml` into your Switch platform instance:
+For full details on the Switch integration architecture, connected agents, Slack channel configuration, and the step-by-step runbook, see **[SWITCH_README.md](SWITCH_README.md)**.
+
+### Quick Overview:
+- **Agent Name**: `finopus` (FinOps Controller Agent powered by Antigravity CLI / Switch Shared SDK)
+- **Channel / Room**: `#finops-sweeper` (Slack room template: [`room.yaml`](room.yaml))
+- **Safety Boundary**: Non-destructive discovery runs autonomously; destructive deletion strictly requires the explicit confirmation phrase `CONFIRM DESTROY`.
 
 ```yaml
-# In chat:
-User: "find zombies"
-Agent: [Scans AWS and outputs region-by-region cost breakdown table]
+# In Slack (#finops-sweeper):
+User: "@finopus scan"
+Agent: [Scans AWS in parallel and outputs region-by-region cost breakdown table]
 
-User: "plan destroy"
-Agent: [Outputs phased destroy plan showing exact $ savings]
+User: "@finopus plan destroy"
+Agent: [Outputs 4-phase destroy plan showing projected $ savings and protected resources]
 
-User: "CONFIRM DESTROY"
-Agent: [Executes Phase 1 -> Phase 2 -> Phase 3 and returns execution summary]
+User: "@finopus CONFIRM DESTROY"
+Agent: [Executes Phase 1 -> Phase 2 -> Phase 3 with IMDSv2 protection and streams progress]
 ```
 
 ---
