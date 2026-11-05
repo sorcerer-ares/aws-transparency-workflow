@@ -82,6 +82,8 @@ def scan_all_regions(
     list[DiscoveredResource]
         Flat list of every discovered resource across all regions.
     """
+    requested_regions = set(regions) if regions is not None else None
+
     if regions is None:
         regions = get_enabled_regions()
 
@@ -109,6 +111,8 @@ def scan_all_regions(
     # S3 is global — scan once outside the regional loop
     try:
         s3_resources = s3.scan_buckets()
+        if requested_regions is not None:
+            s3_resources = [b for b in s3_resources if b.region in requested_regions]
         all_resources.extend(s3_resources)
         logger.info("S3 global scan: discovered %d buckets", len(s3_resources))
     except Exception:

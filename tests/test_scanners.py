@@ -85,3 +85,35 @@ def test_s3_get_bucket_region():
 
     mock_s3.get_bucket_location.return_value = {"LocationConstraint": "ap-south-1"}
     assert _get_bucket_region(mock_s3, "in-bucket") == "ap-south-1"
+
+
+def test_scan_all_regions_filters_s3_by_requested_regions():
+    from zombie_sweeper.inventory import scan_all_regions
+    from zombie_sweeper.models import DiscoveredResource, ResourceType, ResourceStatus
+
+    mock_buckets = [
+        DiscoveredResource(
+            resource_id="b-us",
+            resource_type=ResourceType.S3_BUCKET,
+            region="us-east-1",
+            status=ResourceStatus.ACTIVE,
+        ),
+        DiscoveredResource(
+            resource_id="b-india",
+            resource_type=ResourceType.S3_BUCKET,
+            region="ap-south-1",
+            status=ResourceStatus.ACTIVE,
+        ),
+    ]
+
+    with patch("zombie_sweeper.inventory.scan_region", return_value=[]), \
+         patch("zombie_sweeper.scanners.s3.scan_buckets", return_value=mock_buckets):
+        # Scan only us-east-1
+        results = scan_all_regions(regions=["us-east-1"])
+        assert len(results) == 1
+        assert results[0].resource_id == "b-us"
+
+        # Scan all regions (None)
+        with patch("zombie_sweeper.inventory.get_enabled_regions", return_value=["us-east-1", "ap-south-1"]):
+            results_all = scan_all_regions(regions=None)
+            assert len(results_all) == 2
