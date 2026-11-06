@@ -38,8 +38,7 @@
 ### 1. Setup Virtual Environment
 
 ```bash
-git clone <repo>
-cd agy
+git clone https://github.com/sorcerer-ares/aws-transparency-workflow.git
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e .
