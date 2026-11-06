@@ -2,7 +2,7 @@
 
 > **Switch AI Hackathon Submission**  
 > **Project:** Zombie Sweeper (Multi-Region AWS Resource & FinOps Controller)  
-> **Agent:** `finopus` (FinOps Controller)  
+> **Agent:** `Zombie Sweeper` (FinOps Controller)  
 > **Interface:** Slack (`#finops-sweeper`) via Switch Room Connector  
 
 ---
@@ -16,7 +16,7 @@
 ```
 ┌─────────────────┐       Slack Messages       ┌────────────────────────┐
 │  Slack Channel  │ ◄────────────────────────► │ Switch Gateway (Nginx) │
-│ #finops-sweeper │      (@finopus scan,       │    Port 3000 / SSE     │
+│ #finops-sweeper │      (@Zombie Sweeper scan,       │    Port 3000 / SSE     │
 └─────────────────┘       plan, destroy)       └───────────┬────────────┘
                                                            │
                                                            ▼
@@ -29,7 +29,7 @@
                                                ┌────────────────────────┐
                                                │     Switch Console     │
                                                │   & Shared SDK Host    │
-                                               │  (Agent: finopus / AGY)│
+                                               │  (Agent: Zombie Sweeper / AGY)│
                                                └───────────┬────────────┘
                                                            │
                                                            ▼
@@ -45,7 +45,7 @@
 ## 2. Which Agents Were Connected
 
 ### Agent Profile
-- **Agent Name:** `finopus`
+- **Agent Name:** `Zombie Sweeper`
 - **Agent Provider / Runtime:** Antigravity CLI (`antigravity` via Switch Shared SDK Host)
 - **Role:** `finops-controller` (defined in `room.yaml`)
 - **Assigned Tools / Capabilities:**
@@ -185,7 +185,7 @@ Launch the desktop console using the helper script that securely manages GNOME K
 ### Step 4: Verify the Agent Connection
 
 1. In **Switch Console**, navigate to **Agents**.
-2. Select or register the agent **`finopus`**.
+2. Select or register the agent **`Zombie Sweeper`**.
 3. Verify that the agent instructions match `room.yaml` and that permissions allow `mcp__switch` and CLI tool execution.
 4. Ensure the session connects to the room **`Slack: finops-sweeper`**.
 
@@ -197,11 +197,11 @@ Go to your Slack workspace in the `#finops-sweeper` channel and interact with th
 
 #### 1. Scan for Zombie Resources & Cost
 ```text
-@finopus scan
+@Zombie Sweeper scan
 ```
 *or scan a specific region:*
 ```text
-@finopus scan us-east-1
+@Zombie Sweeper scan us-east-1
 ```
 > **Agent Action:** Runs `zombie-sweeper scan`, collects resource inventories across regions in parallel, and posts a formatted markdown table showing active vs. orphaned resources with estimated monthly spend.
 
@@ -209,7 +209,7 @@ Go to your Slack workspace in the `#finops-sweeper` channel and interact with th
 
 #### 2. Generate a Phased Destroy Plan
 ```text
-@finopus plan destroy
+@Zombie Sweeper plan destroy
 ```
 > **Agent Action:** Identifies detached EBS volumes, unassociated EIPs, orphaned snapshots, and stopped instances. Outputs a dependency-ordered 4-phase plan with projected cost savings.
 
@@ -217,7 +217,7 @@ Go to your Slack workspace in the `#finops-sweeper` channel and interact with th
 
 #### 3. Execute Deletion (Safeguarded)
 ```text
-@finopus CONFIRM DESTROY
+@Zombie Sweeper CONFIRM DESTROY
 ```
 > **Agent Action:** Verifies the safety phrase, triggers `zombie-sweeper apply-destroy --confirm`, preserves protected resources via IMDSv2, and streams progress updates back to Slack.
 
@@ -225,7 +225,7 @@ Go to your Slack workspace in the `#finops-sweeper` channel and interact with th
 
 #### 4. Optimize CloudWatch Log Retention
 ```text
-@finopus set log retention
+@Zombie Sweeper set log retention
 ```
 > **Agent Action:** Updates all CloudWatch log groups with indefinite retention to a cost-effective 7-day retention period.
 
